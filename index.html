@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>МебельДом — Интернет-магазин мебели</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f2ee;
+    --bg2: #ede9e3;
+    --text: #1a1714;
+    --text2: #5a534b;
+    --accent: #8b6c42;
+    --accent2: #c9a96e;
+    --white: #ffffff;
+    --card: #ffffff;
+    --border: #ddd8d0;
+    --shadow: rgba(26,23,20,0.08);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(245,242,238,0.96);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 3rem;
+    height: 64px;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text2);
+    text-decoration: none;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+  .nav-right { display: flex; align-items: center; gap: 1.2rem; }
+  .cart-btn {
+    display: flex; align-items: center; gap: 0.5rem;
+    background: var(--accent);
+    color: var(--white);
+    border: none; cursor: pointer;
+    padding: 0.5rem 1.1rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: background 0.2s;
+    border-radius: 2px;
+  }
+  .cart-btn:hover { background: #7a5c34; }
+  .cart-count {
+    background: var(--accent2);
+    color: var(--text);
+    border-radius: 50%;
+    width: 18px; height: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 500;
+  }
+
+  /* PAGES */
+  .page { display: none; padding-top: 64px; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* === HOME PAGE === */
+  .hero {
+    position: relative;
+    height: calc(100vh - 64px);
+    display: flex; align-items: center;
+    overflow: hidden;
+    background: linear-gradient(135deg, #e8e3db 0%, #d5cfc5 100%);
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect width="60" height="60" fill="none"/><path d="M0 60L60 0M-10 10L10 -10M50 70L70 50" stroke="%23c9a96e" stroke-width="0.3" opacity="0.3"/></svg>') repeat;
+  }
+  .hero-content {
+    position: relative;
+    max-width: 1200px; margin: 0 auto;
+    padding: 0 3rem;
+    animation: fadeInUp 0.9s ease both;
+  }
+  .hero-tag {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+  .hero-title em { font-style: italic; color: var(--accent); }
+  .hero-sub {
+    font-size: 1rem;
+    color: var(--text2);
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--white);
+    border: none; cursor: pointer;
+    padding: 0.9rem 2.2rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: background 0.2s, transform 0.15s;
+    border-radius: 2px;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: #7a5c34; transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    cursor: pointer;
+    padding: 0.9rem 2.2rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    border-radius: 2px;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-outline:hover { background: var(--accent); color: var(--white); }
+
+  .hero-deco {
+    position: absolute; right: 6%; top: 50%;
+    transform: translateY(-50%);
+    width: 340px; height: 420px;
+    background: var(--white);
+    box-shadow: 20px 20px 60px var(--shadow);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    animation: fadeIn 1.2s ease both;
+  }
+  .hero-deco svg { width: 100%; height: 100%; }
+
+  /* FEATURES ROW */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .feature-item {
+    padding: 2rem 1.8rem;
+    border-right: 1px solid var(--border);
+    text-align: center;
+    transition: background 0.2s;
+  }
+  .feature-item:last-child { border-right: none; }
+  .feature-item:hover { background: var(--bg2); }
+  .feature-icon { font-size: 1.6rem; margin-bottom: 0.6rem; }
+  .feature-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+  }
+  .feature-desc { font-size: 0.82rem; color: var(--text2); }
+
+  /* SECTION */
+  .section { padding: 5rem 3rem; max-width: 1200px; margin: 0 auto; }
+  .section-header { margin-bottom: 3rem; }
+  .section-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.7rem;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1.15;
+  }
+
+  /* PRODUCT GRID HOME */
+  .products-home {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .product-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.25s, box-shadow 0.25s;
+    cursor: pointer;
+    position: relative;
+  }
+  .product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px var(--shadow); }
+  .product-img {
+    width: 100%; aspect-ratio: 4/3;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg2);
+    overflow: hidden;
+    position: relative;
+  }
+  .product-img svg { width: 80%; height: 80%; transition: transform 0.3s; }
+  .product-card:hover .product-img svg { transform: scale(1.04); }
+
+.product-photo{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+  .product-badge {
+    position: absolute; top: 12px; left: 12px;
+    background: var(--accent);
+    color: var(--white);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+  }
+  .product-info { padding: 1.2rem; }
+  .product-category {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 0.4rem;
+  }
+  .product-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+  }
+  .product-price-row { display: flex; align-items: center; justify-content: space-between; }
+  .product-price { font-size: 1.05rem; font-weight: 500; color: var(--accent); }
+  .add-to-cart {
+    background: var(--text);
+    color: var(--white);
+    border: none; cursor: pointer;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'Jost', sans-serif;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+  .add-to-cart:hover { background: var(--accent); }
+
+  /* === CATALOG PAGE === */
+  .catalog-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 3rem 4rem;
+    align-items: start;
+  }
+  .catalog-sidebar {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1.6rem;
+    border-radius: 4px;
+    position: sticky;
+    top: 80px;
+  }
+  .sidebar-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    margin-bottom: 1.4rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .filter-group { margin-bottom: 1.4rem; }
+  .filter-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.7rem;
+    display: block;
+  }
+  .filter-options { display: flex; flex-direction: column; gap: 0.4rem; }
+  .filter-option {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--text2);
+    cursor: pointer;
+    padding: 0.2rem 0;
+    transition: color 0.15s;
+  }
+  .filter-option:hover { color: var(--accent); }
+  .filter-option input[type="checkbox"] { accent-color: var(--accent); cursor: pointer; }
+  .price-range { display: flex; flex-direction: column; gap: 0.5rem; }
+  .price-inputs { display: flex; gap: 0.5rem; }
+  .price-inputs input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 0.4rem 0.6rem;
+    font-size: 0.82rem;
+    font-family: 'Jost', sans-serif;
+    color: var(--text);
+    border-radius: 2px;
+  }
+  input[type="range"] { width: 100%; accent-color: var(--accent); }
+  .filter-reset {
+    width: 100%;
+    background: none;
+    border: 1px solid var(--border);
+    padding: 0.55rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'Jost', sans-serif;
+    color: var(--text2);
+    cursor: pointer;
+    border-radius: 2px;
+    margin-top: 0.5rem;
+    transition: all 0.2s;
+  }
+  .filter-reset:hover { border-color: var(--accent); color: var(--accent); }
+
+  .catalog-main { }
+  .catalog-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .catalog-count { font-size: 0.82rem; color: var(--text2); }
+  .sort-select {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 0.45rem 1rem;
+    font-size: 0.82rem;
+    font-family: 'Jost', sans-serif;
+    color: var(--text);
+    cursor: pointer;
+    border-radius: 2px;
+    appearance: auto;
+  }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(26,23,20,0.6);
+    z-index: 200;
+    backdrop-filter: blur(2px);
+    animation: fadeIn 0.2s ease;
+  }
+  .modal-overlay.open { display: flex; align-items: center; justify-content: center; }
+  .modal {
+    background: var(--white);
+    max-width: 680px; width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    border-radius: 6px;
+    animation: scaleIn 0.25s ease;
+  }
+  .modal-img {
+    width: 100%; aspect-ratio: 16/9;
+    background: var(--bg2);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal-img svg { width: 50%; height: 50%; }
+  .modal-body { padding: 2rem; }
+  .modal-cat { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent2); margin-bottom: 0.5rem; }
+  .modal-name { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; margin-bottom: 0.8rem; }
+  .modal-price { font-size: 1.5rem; color: var(--accent); font-weight: 500; margin-bottom: 1rem; }
+  .modal-desc { font-size: 0.88rem; color: var(--text2); line-height: 1.7; margin-bottom: 1.5rem; }
+  .modal-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 1.5rem; }
+  .spec-item { background: var(--bg); padding: 0.6rem 0.8rem; border-radius: 3px; }
+  .spec-k { font-size: 0.7rem; color: var(--text2); text-transform: uppercase; letter-spacing: 0.1em; }
+  .spec-v { font-size: 0.88rem; font-weight: 500; }
+  .modal-actions { display: flex; gap: 1rem; }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: var(--white); border: 1px solid var(--border);
+    width: 36px; height: 36px; border-radius: 50%;
+    cursor: pointer; font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .modal-close:hover { background: var(--bg); }
+
+  /* CART MODAL */
+  .cart-overlay {
+    display: none; position: fixed; inset: 0;
+    z-index: 300;
+    background: rgba(26,23,20,0.4);
+  }
+  .cart-overlay.open { display: block; }
+  .cart-panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: 380px;
+    background: var(--white);
+    box-shadow: -4px 0 24px var(--shadow);
+    display: flex; flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+  .cart-overlay.open .cart-panel { transform: translateX(0); }
+  .cart-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .cart-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; }
+  .close-cart {
+    background: none; border: none; font-size: 1.2rem;
+    cursor: pointer; color: var(--text2); padding: 0.2rem;
+  }
+  .cart-items { flex: 1; overflow-y: auto; padding: 1rem 1.5rem; }
+  .cart-item {
+    display: flex; gap: 1rem; align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .cart-item-thumb {
+    width: 70px; height: 70px;
+    background: var(--bg2);
+    border-radius: 3px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cart-item-thumb svg { width: 80%; height: 80%; }
+  .cart-item-info { flex: 1; }
+  .cart-item-name { font-size: 0.9rem; font-weight: 400; margin-bottom: 0.2rem; }
+  .cart-item-price { font-size: 0.88rem; color: var(--accent); }
+  .cart-item-qty { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.4rem; }
+  .qty-btn {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    width: 26px; height: 26px;
+    border-radius: 50%; cursor: pointer;
+    font-size: 0.9rem; display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .qty-btn:hover { background: var(--border); }
+  .qty-num { font-size: 0.88rem; min-width: 20px; text-align: center; }
+  .remove-item { background: none; border: none; cursor: pointer; color: var(--text2); font-size: 1rem; padding: 0.2rem; }
+  .remove-item:hover { color: #c0392b; }
+  .cart-empty { text-align: center; padding: 3rem 1rem; color: var(--text2); }
+  .cart-empty-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .cart-footer {
+    padding: 1.5rem;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .cart-total { display: flex; justify-content: space-between; font-size: 1rem; font-weight: 500; margin-bottom: 1rem; }
+  .checkout-btn {
+    width: 100%;
+    background: var(--accent);
+    color: var(--white);
+    border: none; cursor: pointer;
+    padding: 0.9rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+  .checkout-btn:hover { background: #7a5c34; }
+
+  /* === ABOUT PAGE === */
+  .about-hero {
+    background: linear-gradient(135deg, var(--bg2) 0%, var(--bg) 100%);
+    padding: 4rem 3rem;
+    text-align: center;
+  }
+  .about-hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 300;
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+  .about-hero-sub { font-size: 1rem; color: var(--text2); max-width: 600px; margin: 0 auto; }
+  .about-content {
+    max-width: 1200px; margin: 0 auto;
+    padding: 4rem 3rem;
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    margin-bottom: 4rem;
+  }
+  .about-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 300;
+    margin-bottom: 1.2rem; color: var(--text);
+  }
+  .about-text p { font-size: 0.9rem; color: var(--text2); line-height: 1.8; margin-bottom: 1rem; }
+  .about-visual {
+    background: var(--bg2);
+    aspect-ratio: 4/3;
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .about-visual svg { width: 60%; height: 60%; }
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 4rem;
+  }
+  .stat-item {
+    background: var(--white);
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .stat-label { font-size: 0.78rem; color: var(--text2); text-transform: uppercase; letter-spacing: 0.1em; }
+
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .value-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1.8rem;
+    border-radius: 4px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .value-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px var(--shadow); }
+  .value-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+  .value-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; margin-bottom: 0.6rem;
+  }
+  .value-text { font-size: 0.84rem; color: var(--text2); line-height: 1.7; }
+
+  /* === CONTACTS PAGE === */
+  .contacts-content {
+    max-width: 1200px; margin: 0 auto;
+    padding: 3rem 3rem 5rem;
+  }
+  .contacts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  .contacts-info h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem; font-weight: 300;
+    margin-bottom: 0.8rem;
+  }
+  .contacts-info p { font-size: 0.88rem; color: var(--text2); margin-bottom: 2rem; line-height: 1.7; }
+  .contact-items { display: flex; flex-direction: column; gap: 1.2rem; }
+  .contact-item { display: flex; gap: 1rem; align-items: flex-start; }
+  .contact-item-icon {
+    width: 40px; height: 40px;
+    background: var(--bg2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; flex-shrink: 0;
+  }
+  .contact-item-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.2rem; }
+  .contact-item-val { font-size: 0.9rem; }
+  .socials { display: flex; gap: 0.8rem; margin-top: 2rem; }
+  .social-link {
+    width: 40px; height: 40px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+    cursor: pointer;
+  }
+  .social-link:hover { background: var(--accent); border-color: var(--accent); }
+
+  /* FORM */
+  .contact-form-wrap {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    border-radius: 6px;
+  }
+  .form-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .form-field { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+  .form-field label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text2); }
+  .form-field input, .form-field textarea, .form-field select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 0.7rem 1rem;
+    font-size: 0.88rem;
+    font-family: 'Jost', sans-serif;
+    color: var(--text);
+    border-radius: 3px;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-field input:focus, .form-field textarea:focus, .form-field select:focus { border-color: var(--accent); }
+  .form-field textarea { resize: vertical; min-height: 100px; }
+  .form-success {
+    display: none;
+    background: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    color: #2e7d32;
+    padding: 1rem;
+    border-radius: 4px;
+    font-size: 0.88rem;
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  /* CHECKOUT MODAL */
+  .checkout-overlay {
+    display: none; position: fixed; inset: 0;
+    z-index: 400;
+    background: rgba(26,23,20,0.5);
+    align-items: center; justify-content: center;
+  }
+  .checkout-overlay.open { display: flex; }
+  .checkout-modal {
+    background: var(--white);
+    max-width: 500px; width: 90%;
+    border-radius: 6px;
+    padding: 2.5rem;
+    animation: scaleIn 0.25s ease;
+  }
+  .checkout-modal h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; margin-bottom: 1.5rem; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 2rem; right: 2rem;
+    background: var(--text);
+    color: var(--white);
+    padding: 0.9rem 1.5rem;
+    border-radius: 4px;
+    font-size: 0.84rem;
+    z-index: 500;
+    transform: translateY(80px); opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* PAGE HEADER (for catalog, about, contacts) */
+  .page-header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 2.5rem 3rem;
+  }
+  .page-header-tag { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+  .page-header-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 300;
+    color: var(--text);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.94); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--text);
+    color: rgba(255,255,255,0.7);
+    padding: 3rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 2rem;
+  }
+  footer h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--white); margin-bottom: 1rem; font-weight: 400; }
+  footer p, footer a { font-size: 0.82rem; line-height: 1.9; color: rgba(255,255,255,0.6); text-decoration: none; display: block; transition: color 0.15s; cursor: pointer; }
+  footer a:hover { color: var(--accent2); }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--white); margin-bottom: 0.8rem; }
+  .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.35); margin-top: 1rem; }
+  .modal-wrap { position: relative; }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 1.2rem; }
+    .hero-deco { display: none; }
+    .features { grid-template-columns: repeat(2, 1fr); }
+    .products-home { grid-template-columns: repeat(2, 1fr); }
+    .catalog-layout { grid-template-columns: 1fr; padding: 1.2rem; }
+    .catalog-sidebar { position: static; }
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+    .about-grid { grid-template-columns: 1fr; }
+    .contacts-grid { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    footer { grid-template-columns: 1fr 1fr; }
+    .values-grid { grid-template-columns: 1fr; }
+    .section { padding: 3rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" onclick="showPage('home')">МебельДом</a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" id="nav-home" class="active">Главная</a></li>
+    <li><a onclick="showPage('catalog')" id="nav-catalog">Каталог</a></li>
+    <li><a onclick="showPage('about')" id="nav-about">О нас</a></li>
+    <li><a onclick="showPage('contacts')" id="nav-contacts">Контакты</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="cart-btn" onclick="openCart()">
+      🛍 Корзина <span class="cart-count" id="cart-count">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ====== HOME PAGE ====== -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-tag">✦ Интернет-магазин мебели</div>
+      <h1 class="hero-title">Создайте дом,<br>который вы <em>любите</em></h1>
+      <p class="hero-sub">Качественная мебель для каждого пространства. Современный дизайн, натуральные материалы, доступные цены.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="showPage('catalog')">Смотреть каталог</button>
+        <button class="btn-outline" onclick="showPage('about')">О нас</button>
+      </div>
+    </div>
+    <div class="hero-deco">
+      <svg viewBox="0 0 300 380" xmlns="http://www.w3.org/2000/svg">
+        <!-- Stylish room illustration -->
+        <rect width="300" height="380" fill="#f5f2ee"/>
+        <!-- Floor -->
+        <rect x="0" y="280" width="300" height="100" fill="#e8e3db"/>
+        <!-- Wall lines -->
+        <line x1="0" y1="280" x2="300" y2="280" stroke="#ddd8d0" stroke-width="1"/>
+        <!-- Sofa body -->
+        <rect x="40" y="210" width="200" height="70" rx="8" fill="#c9a96e" opacity="0.7"/>
+        <!-- Sofa back -->
+        <rect x="40" y="190" width="200" height="30" rx="6" fill="#8b6c42" opacity="0.8"/>
+        <!-- Sofa arms -->
+        <rect x="35" y="205" width="20" height="75" rx="5" fill="#8b6c42" opacity="0.8"/>
+        <rect x="245" y="205" width="20" height="75" rx="5" fill="#8b6c42" opacity="0.8"/>
+        <!-- Cushions -->
+        <rect x="55" y="215" width="80" height="55" rx="5" fill="#d4b882" opacity="0.6"/>
+        <rect x="145" y="215" width="80" height="55" rx="5" fill="#d4b882" opacity="0.6"/>
+        <!-- Coffee table -->
+        <rect x="90" y="285" width="120" height="8" rx="3" fill="#5a4535"/>
+        <rect x="100" y="293" width="8" height="20" fill="#5a4535"/>
+        <rect x="192" y="293" width="8" height="20" fill="#5a4535"/>
+        <!-- Plant pot -->
+        <ellipse cx="250" cy="290" rx="18" ry="10" fill="#8b6c42" opacity="0.6"/>
+        <rect x="232" y="280" width="36" height="15" rx="3" fill="#8b6c42" opacity="0.7"/>
+        <!-- Plant leaves -->
+        <path d="M250 280 Q270 250 260 230 Q245 255 250 280" fill="#7a9e5a" opacity="0.8"/>
+        <path d="M250 275 Q230 245 240 225 Q255 250 250 275" fill="#5a7e3a" opacity="0.8"/>
+        <path d="M248 270 Q265 255 270 235 Q250 258 248 270" fill="#8ab868" opacity="0.6"/>
+        <!-- Lamp -->
+        <rect x="55" y="100" width="4" height="90" fill="#aaa090"/>
+        <polygon points="30,100 80,100 70,115 40,115" fill="#c9a96e" opacity="0.8"/>
+        <circle cx="57" cy="105" r="3" fill="#fff9e6" opacity="0.9"/>
+        <!-- Picture frame -->
+        <rect x="130" y="80" width="80" height="60" rx="3" fill="none" stroke="#ddd8d0" stroke-width="2"/>
+        <rect x="134" y="84" width="72" height="52" rx="2" fill="#e8e3db"/>
+        <ellipse cx="170" cy="110" rx="20" ry="15" fill="#c9a96e" opacity="0.3"/>
+        <path d="M145 125 Q160 100 175 115 Q185 95 200 110" fill="none" stroke="#8b6c42" stroke-width="1.5" opacity="0.5"/>
+        <!-- Accent text -->
+        <text x="150" y="370" text-anchor="middle" font-family="Georgia" font-size="11" fill="#8b6c42" opacity="0.6">МебельДом</text>
+      </svg>
+    </div>
+  </section>
+
+  <div class="features">
+    <div class="feature-item">
+      <div class="feature-icon">🚚</div>
+      <div class="feature-label">Доставка</div>
+      <div class="feature-desc">Бесплатно от 30 000 ₽</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🔧</div>
+      <div class="feature-label">Сборка</div>
+      <div class="feature-desc">Профессиональные мастера</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">↩️</div>
+      <div class="feature-label">Возврат</div>
+      <div class="feature-desc">30 дней без вопросов</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🛡</div>
+      <div class="feature-label">Гарантия</div>
+      <div class="feature-desc">До 5 лет на все товары</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">✦ Популярное</div>
+      <h2 class="section-title">Хиты продаж</h2>
+    </div>
+    <div class="products-home" id="home-products"></div>
+    <div style="text-align:center;margin-top:2.5rem;">
+      <button class="btn-outline" onclick="showPage('catalog')">Весь каталог →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== CATALOG PAGE ====== -->
+<div class="page" id="page-catalog">
+  <div class="page-header">
+    <div class="page-header-tag">✦ Ассортимент</div>
+    <h1 class="page-header-title">Каталог мебели</h1>
+  </div>
+  <div class="catalog-layout">
+    <aside class="catalog-sidebar">
+      <div class="sidebar-title">Фильтры</div>
+      <div class="filter-group">
+        <span class="filter-label">Категория</span>
+        <div class="filter-options" id="filter-categories"></div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Цена</span>
+        <div class="price-range">
+          <div class="price-inputs">
+            <input type="number" id="price-min" placeholder="От" value="0" onchange="applyFilters()">
+            <input type="number" id="price-max" placeholder="До" value="200000" onchange="applyFilters()">
+          </div>
+          <input type="range" id="price-slider" min="0" max="200000" value="200000" oninput="document.getElementById('price-max').value=this.value;applyFilters()">
+        </div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Материал</span>
+        <div class="filter-options" id="filter-materials"></div>
+      </div>
+      <button class="filter-reset" onclick="resetFilters()">Сбросить фильтры</button>
+    </aside>
+    <div class="catalog-main">
+      <div class="catalog-header">
+        <span class="catalog-count" id="catalog-count">Показано товаров: 0</span>
+        <select class="sort-select" id="sort-select" onchange="applyFilters()">
+          <option value="default">По умолчанию</option>
+          <option value="price-asc">Цена: по возрастанию</option>
+          <option value="price-desc">Цена: по убыванию</option>
+          <option value="name">По названию</option>
+        </select>
+      </div>
+      <div class="products-grid" id="catalog-products"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== ABOUT PAGE ====== -->
+<div class="page" id="page-about">
+  <div class="about-hero">
+    <div class="section-tag">✦ Наша история</div>
+    <h1 class="about-hero-title">О компании МебельДом</h1>
+    <p class="about-hero-sub">Мы создаём пространства, в которых хочется жить. С 2010 года производим и продаём качественную мебель для вашего дома.</p>
+  </div>
+  <div class="about-content">
+    <div class="about-grid">
+      <div class="about-text">
+        <h2>Наша миссия</h2>
+        <p>МебельДом — это не просто магазин мебели. Мы помогаем людям создавать уютные, функциональные и красивые пространства. Каждый предмет мебели в нашем каталоге прошёл тщательный отбор по качеству, дизайну и долговечности.</p>
+        <p>Мы верим, что хорошая мебель — это инвестиция в качество жизни. Именно поэтому мы предлагаем только проверенные изделия от надёжных производителей, используя натуральные материалы и современные технологии производства.</p>
+        <p>За 14 лет работы мы обустроили более 25 000 домов по всей стране и продолжаем расти, предлагая новые коллекции каждый сезон.</p>
+        <button class="btn-primary" style="margin-top:1rem;" onclick="showPage('contacts')">Связаться с нами</button>
+      </div>
+      <div class="about-visual">
+        <svg viewBox="0 0 300 225" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="225" fill="#ede9e3"/>
+          <!-- Workshop illustration -->
+          <rect x="20" y="80" width="260" height="120" rx="4" fill="#d5cfc5"/>
+          <rect x="20" y="80" width="260" height="8" fill="#c9a96e" opacity="0.5"/>
+          <!-- Desk -->
+          <rect x="60" y="130" width="180" height="10" rx="3" fill="#8b6c42" opacity="0.8"/>
+          <rect x="75" y="140" width="8" height="40" fill="#7a5c34" opacity="0.8"/>
+          <rect x="217" y="140" width="8" height="40" fill="#7a5c34" opacity="0.8"/>
+          <!-- Monitor -->
+          <rect x="120" y="90" width="70" height="45" rx="3" fill="#1a1714" opacity="0.8"/>
+          <rect x="122" y="92" width="66" height="41" rx="2" fill="#3a3530"/>
+          <rect x="148" y="135" width="14" height="8" fill="#1a1714" opacity="0.8"/>
+          <rect x="140" y="143" width="30" height="4" rx="2" fill="#1a1714" opacity="0.8"/>
+          <!-- Screen glow -->
+          <rect x="125" y="95" width="60" height="35" rx="1" fill="#c9a96e" opacity="0.2"/>
+          <!-- Chair -->
+          <rect x="85" y="155" width="40" height="5" rx="3" fill="#5a4535"/>
+          <rect x="100" y="160" width="8" height="15" fill="#5a4535"/>
+          <rect x="83" y="175" width="44" height="5" rx="3" fill="#5a4535"/>
+          <rect x="200" y="155" width="40" height="5" rx="3" fill="#5a4535"/>
+          <rect x="214" y="160" width="8" height="15" fill="#5a4535"/>
+          <rect x="198" y="175" width="44" height="5" rx="3" fill="#5a4535"/>
+          <text x="150" y="210" text-anchor="middle" font-size="10" fill="#8b6c42" opacity="0.7" font-family="Georgia">Наше производство</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-num">14</div>
+        <div class="stat-label">Лет на рынке</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">25K+</div>
+        <div class="stat-label">Довольных клиентов</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Товаров в каталоге</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">50+</div>
+        <div class="stat-label">Городов доставки</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-tag">✦ Ценности</div>
+      <h2 class="section-title">Почему выбирают нас</h2>
+    </div>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">🪵</div>
+        <div class="value-title">Натуральные материалы</div>
+        <div class="value-text">Используем только сертифицированную древесину, экологичные ткани и нетоксичные покрытия. Ваш дом — ваша безопасность.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">✏️</div>
+        <div class="value-title">Авторский дизайн</div>
+        <div class="value-text">Наши дизайнеры создают коллекции, которые сочетают эстетику и функциональность. Каждая линейка — это продуманная история.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🤝</div>
+        <div class="value-title">Честный сервис</div>
+        <div class="value-text">Прозрачные цены, честные условия возврата и профессиональная поддержка на каждом этапе — от выбора до сборки.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== CONTACTS PAGE ====== -->
+<div class="page" id="page-contacts">
+  <div class="page-header">
+    <div class="page-header-tag">✦ Свяжитесь с нами</div>
+    <h1 class="page-header-title">Контакты</h1>
+  </div>
+  <div class="contacts-content">
+    <div class="contacts-grid">
+      <div class="contacts-info">
+        <h2>Мы всегда на связи</h2>
+        <p>Если у вас есть вопросы по товарам, доставке или заказу — напишите нам или позвоните. Мы ответим в течение одного рабочего дня.</p>
+        <div class="contact-items">
+          <div class="contact-item">
+            <div class="contact-item-icon">📞</div>
+            <div>
+              <div class="contact-item-label">Телефон</div>
+              <div class="contact-item-val">+7 (800) 555-35-35</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">✉️</div>
+            <div>
+              <div class="contact-item-label">Email</div>
+              <div class="contact-item-val">info@mebeldom.ru</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">📍</div>
+            <div>
+              <div class="contact-item-label">Адрес шоурума</div>
+              <div class="contact-item-val">г. Тамбов, ул. Советская, 191<br><small style="color:var(--text2)">Пн–Сб: 10:00–19:00, Вс: 11:00–17:00</small></div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">🕐</div>
+            <div>
+              <div class="contact-item-label">Режим работы</div>
+              <div class="contact-item-val">Пн–Пт: 9:00–20:00<br>Сб–Вс: 10:00–18:00</div>
+            </div>
+          </div>
+        </div>
+        <div class="socials">
+          <a class="social-link" title="ВКонтакте">VK</a>
+          <a class="social-link" title="Telegram">TG</a>
+          <a class="social-link" title="WhatsApp">WA</a>
+        </div>
+      </div>
+
+      <div class="contact-form-wrap">
+        <div class="form-title">Форма обратной связи</div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Имя *</label>
+            <input type="text" id="f-name" placeholder="Ваше имя">
+          </div>
+          <div class="form-field">
+            <label>Телефон</label>
+            <input type="tel" id="f-phone" placeholder="+7 (___) ___-__-__">
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Email *</label>
+          <input type="email" id="f-email" placeholder="you@example.com">
+        </div>
+        <div class="form-field">
+          <label>Тема обращения</label>
+          <select id="f-subject">
+            <option>Вопрос по товару</option>
+            <option>Условия доставки</option>
+            <option>Оформление заказа</option>
+            <option>Возврат товара</option>
+            <option>Другое</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Сообщение *</label>
+          <textarea id="f-message" placeholder="Опишите ваш вопрос или пожелание..."></textarea>
+        </div>
+        <button class="btn-primary" style="width:100%;" onclick="submitForm()">Отправить сообщение</button>
+        <div class="form-success" id="form-success">✅ Спасибо! Ваше сообщение отправлено. Мы свяжемся с вами в ближайшее время.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">МебельДом</div>
+    <p>Качественная мебель для вашего дома. Собственное производство, натуральные материалы, честные цены.</p>
+    <p class="footer-copy">© 2024 МебельДом. Все права защищены.</p>
+  </div>
+  <div>
+    <h4>Навигация</h4>
+    <a onclick="showPage('home')">Главная</a>
+    <a onclick="showPage('catalog')">Каталог</a>
+    <a onclick="showPage('about')">О нас</a>
+    <a onclick="showPage('contacts')">Контакты</a>
+  </div>
+  <div>
+    <h4>Информация</h4>
+    <a>Доставка и оплата</a>
+    <a>Гарантия</a>
+    <a>Возврат товара</a>
+    <a>Сборка мебели</a>
+  </div>
+  <div>
+    <h4>Контакты</h4>
+    <p>+7 (800) 555-35-35</p>
+    <p>info@mebeldom.ru</p>
+    <p>г. Тамбов, ул. Советская, 191</p>
+  </div>
+</footer>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="product-modal" onclick="closeModal(event)">
+  <div class="modal modal-wrap">
+    <button class="modal-close" onclick="closeProductModal()">✕</button>
+    <div class="modal-img" id="modal-img"></div>
+    <div class="modal-body">
+      <div class="modal-cat" id="modal-cat"></div>
+      <div class="modal-name" id="modal-name"></div>
+      <div class="modal-price" id="modal-price"></div>
+      <div class="modal-desc" id="modal-desc"></div>
+      <div class="modal-specs" id="modal-specs"></div>
+      <div class="modal-actions">
+        <button class="btn-primary" id="modal-add-btn" onclick="addToCartFromModal()">Добавить в корзину</button>
+        <button class="btn-outline" onclick="closeProductModal()">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CART PANEL -->
+<div class="cart-overlay" id="cart-overlay" onclick="closeCartOutside(event)">
+  <div class="cart-panel">
+    <div class="cart-header">
+      <div class="cart-title">Корзина</div>
+      <button class="close-cart" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cart-items"></div>
+    <div class="cart-footer" id="cart-footer" style="display:none;">
+      <div class="cart-total">
+        <span>Итого:</span>
+        <span id="cart-total-price">0 ₽</span>
+      </div>
+      <button class="checkout-btn" onclick="openCheckout()">Оформить заказ</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="checkout-overlay" id="checkout-overlay">
+  <div class="checkout-modal">
+    <h2>Оформление заказа</h2>
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Имя *</label>
+        <input type="text" id="ch-name" placeholder="Ваше имя">
+      </div>
+      <div class="form-field">
+        <label>Телефон *</label>
+        <input type="tel" id="ch-phone" placeholder="+7">
+      </div>
+    </div>
+    <div class="form-field">
+      <label>Адрес доставки *</label>
+      <input type="text" id="ch-address" placeholder="Город, улица, дом, квартира">
+    </div>
+    <div class="form-field">
+      <label>Способ оплаты</label>
+      <select id="ch-payment">
+        <option>Картой онлайн</option>
+        <option>Наличными при получении</option>
+        <option>Картой при получении</option>
+      </select>
+    </div>
+    <div style="margin-bottom:1.2rem;font-size:0.88rem;color:var(--text2);">
+      Сумма заказа: <strong id="checkout-total" style="color:var(--accent);"></strong>
+    </div>
+    <div style="display:flex;gap:1rem;">
+      <button class="btn-primary" style="flex:1;" onclick="placeOrder()">Подтвердить заказ</button>
+      <button class="btn-outline" onclick="closeCheckout()">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ========== DATA ==========
+const svgSofa = `<svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="70" width="180" height="60" rx="8" fill="#c9a96e" opacity="0.7"/>
+  <rect x="10" y="55" width="180" height="25" rx="6" fill="#8b6c42" opacity="0.8"/>
+  <rect x="5" y="65" width="18" height="65" rx="5" fill="#8b6c42" opacity="0.8"/>
+  <rect x="177" y="65" width="18" height="65" rx="5" fill="#8b6c42" opacity="0.8"/>
+  <rect x="18" y="75" width="75" height="48" rx="5" fill="#d4b882" opacity="0.6"/>
+  <rect x="105" y="75" width="75" height="48" rx="5" fill="#d4b882" opacity="0.6"/>
+  <rect x="30" y="130" width="20" height="12" rx="3" fill="#5a4535"/>
+  <rect x="150" y="130" width="20" height="12" rx="3" fill="#5a4535"/>
+</svg>`;
+
+const svgChair = `<svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+  <rect x="40" y="80" width="120" height="70" rx="10" fill="#8b6c42" opacity="0.8"/>
+  <rect x="30" y="30" width="18" height="110" rx="6" fill="#8b6c42" opacity="0.9"/>
+  <rect x="152" y="30" width="18" height="110" rx="6" fill="#8b6c42" opacity="0.9"/>
+  <rect x="40" y="85" width="120" height="55" rx="8" fill="#c9a96e" opacity="0.7"/>
+  <rect x="50" y="150" width="12" height="25" rx="4" fill="#5a4535"/>
+  <rect x="138" y="150" width="12" height="25" rx="4" fill="#5a4535"/>
+</svg>`;
+
+const svgTable = `<svg viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="60" width="200" height="15" rx="5" fill="#8b6c42" opacity="0.9"/>
+  <rect x="10" y="55" width="200" height="10" rx="4" fill="#a07850" opacity="0.8"/>
+  <rect x="30" y="75" width="15" height="60" rx="4" fill="#7a5c34"/>
+  <rect x="175" y="75" width="15" height="60" rx="4" fill="#7a5c34"/>
+  <ellipse cx="110" cy="60" rx="100" ry="8" fill="#b08050" opacity="0.2"/>
+</svg>`;
+
+const svgBed = `<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="80" width="220" height="55" rx="6" fill="#c9a96e" opacity="0.6"/>
+  <rect x="10" y="30" width="220" height="55" rx="6" fill="#e8e3db"/>
+  <rect x="10" y="25" width="30" height="110" rx="5" fill="#8b6c42" opacity="0.8"/>
+  <rect x="200" y="25" width="30" height="110" rx="5" fill="#8b6c42" opacity="0.8"/>
+  <rect x="50" y="35" width="130" height="42" rx="8" fill="#ddd8d0" opacity="0.9"/>
+  <rect x="50" y="35" width="63" height="42" rx="6" fill="white" opacity="0.7"/>
+  <rect x="117" y="35" width="63" height="42" rx="6" fill="white" opacity="0.7"/>
+  <rect x="10" y="135" width="220" height="8" rx="4" fill="#7a5c34" opacity="0.7"/>
+</svg>`;
+
+const svgWardrobe = `<svg viewBox="0 0 180 220" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="10" width="160" height="200" rx="4" fill="#c9a96e" opacity="0.5"/>
+  <rect x="10" y="10" width="160" height="200" rx="4" fill="none" stroke="#8b6c42" stroke-width="2"/>
+  <line x1="90" y1="10" x2="90" y2="210" stroke="#8b6c42" stroke-width="2"/>
+  <circle cx="78" cy="110" r="5" fill="#7a5c34"/>
+  <circle cx="102" cy="110" r="5" fill="#7a5c34"/>
+  <rect x="10" y="190" width="160" height="10" rx="2" fill="#8b6c42" opacity="0.7"/>
+  <rect x="10" y="10" width="160" height="15" rx="4" fill="#8b6c42" opacity="0.6"/>
+</svg>`;
+
+const svgShelf = `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="10" width="180" height="185" rx="4" fill="#d4b882" opacity="0.4" stroke="#8b6c42" stroke-width="1.5"/>
+  <rect x="10" y="75" width="180" height="8" fill="#8b6c42" opacity="0.6"/>
+  <rect x="10" y="140" width="180" height="8" fill="#8b6c42" opacity="0.6"/>
+  <rect x="25" y="25" width="12" height="45" rx="2" fill="#7a5c34" opacity="0.7"/>
+  <rect x="42" y="30" width="10" height="40" rx="2" fill="#9a7c5a" opacity="0.7"/>
+  <rect x="57" y="20" width="14" height="50" rx="2" fill="#8b6c42" opacity="0.7"/>
+  <rect x="90" y="88" width="50" height="45" rx="3" fill="#c9a96e" opacity="0.5"/>
+  <circle cx="135" cy="100" r="15" fill="#8b6c42" opacity="0.3"/>
+  <rect x="25" y="155" width="40" height="30" rx="3" fill="#7a5c34" opacity="0.5"/>
+  <rect x="70" y="160" width="30" height="25" rx="3" fill="#9a7c5a" opacity="0.5"/>
+</svg>`;
+
+const products = [
+  { id:1, name:'Диван Комфорт', cat:'Диваны', price:45900, material:'Велюр', badge:'Хит', image:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=1200&auto=format&fit=crop', desc:'Просторный угловой диван с мягкими подушками и удобными подлокотниками. Идеально подходит для большой гостиной. Наполнитель — высокоплотный поролон.', specs:{Размер:'250×90×85 см', Материал:'Велюр', Цвет:'Бежевый', Гарантия:'2 года'} },
+  { id:2, name:'Кресло Релакс', cat:'Кресла', price:18500, material:'Ткань', badge:'', image:'https://images.uzum.uz/d05isc6i4n37npaq4pt0/original.jpg', desc:'Эргономичное кресло для отдыха с удобной высокой спинкой. Прочный каркас из бука, обивка из гипоаллергенной ткани.', specs:{Размер:'80×75×100 см', Материал:'Ткань', Цвет:'Кофейный', Гарантия:'2 года'} },
+  { id:3, name:'Стол Элегант', cat:'Столы', price:28700, material:'Дерево', badge:'Новинка', image:'https://images.unsplash.com/photo-1538688525198-9b88f6f53126?q=80&w=1200&auto=format&fit=crop', desc:'Обеденный стол из массива дуба с изящными коническими ножками. Покрытие устойчиво к влаге и царапинам. Для 6 персон.', specs:{Размер:'160×80×75 см', Материал:'Дуб массив', Цвет:'Натуральный', Гарантия:'3 года'} },
+  { id:4, name:'Кровать Люкс', cat:'Кровати', price:62000, material:'Дерево', badge:'', image:'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop', desc:'Двуспальная кровать с мягким изголовьем из экокожи. Вместительный ящик для хранения постельных принадлежностей.', specs:{Размер:'200×160×115 см', Материал:'ЛДСП+экокожа', Цвет:'Орех/серый', Гарантия:'2 года'} },
+  { id:5, name:'Шкаф Классик', cat:'Шкафы', price:34200, material:'ЛДСП', badge:'', image:'https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1200&auto=format&fit=crop', desc:'Двухдверный распашной шкаф с зеркалом и вместительными полками. Подходит для спальни или прихожей.', specs:{Размер:'180×60×210 см', Материал:'ЛДСП', Цвет:'Белый/дуб', Гарантия:'2 года'} },
+  { id:6, name:'Стеллаж Модерн', cat:'Стеллажи', price:12800, material:'МДФ', badge:'Акция', image:'https://cdn2.skdesign.ru/information_system/media/50/3c/77/503c777a2d4f463e41ca80f69f8f46ca--origin.webp', desc:'Открытый стеллаж с 4 полками. Лёгкий, стильный, подходит для книг, декора и различных аксессуаров.', specs:{Размер:'80×30×180 см', Материал:'МДФ', Цвет:'Белый', Гарантия:'1 год'} },
+  { id:7, name:'Диван Уют', cat:'Диваны', price:38500, material:'Ткань', badge:'', image:'https://cdn1.ozone.ru/s3/multimedia-o/6590580144.jpg', desc:'Компактный двухместный диван-книжка. Легко трансформируется в спальное место. Прочный деревянный каркас.', specs:{Размер:'180×85×85 см', Материал:'Рогожка', Цвет:'Серый', Гарантия:'2 года'} },
+  { id:8, name:'Стол Лофт', cat:'Столы', price:16900, material:'Металл/дерево', badge:'', image:'https://i.pinimg.com/originals/7a/2f/65/7a2f65b70d30a4cfbc3d424120323012.jpg', desc:'Журнальный столик в стиле лофт. Столешница из сосны, основание из чёрного металла. Для гостиной.', specs:{Размер:'90×50×45 см', Материал:'Сосна+металл', Цвет:'Чёрный/натуральный', Гарантия:'1 год'} },
+  { id:9, name:'Кресло Люкс', cat:'Кресла', price:24500, material:'Экокожа', badge:'Новинка', image:'https://mebeldavinci.ru/upload/iblock/c67/oxzob3olvl8z3iz2qo98kcos9vcxyznf.jpg', desc:'Дизайнерское кресло с деревянными ножками из бука. Обивка из прочной экокожи, легко очищается.', specs:{Размер:'75×70×95 см', Материал:'Экокожа', Цвет:'Чёрный', Гарантия:'2 года'} },
+];
+
+let cart = [];
+let currentProduct = null;
+let activeFilters = { categories: [], materials: [], maxPrice: 200000, minPrice: 0 };
+
+// ========== PAGES ==========
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.getElementById('nav-' + page).classList.add('active');
+  window.scrollTo(0, 0);
+  if (page === 'catalog') renderCatalog();
+  if (page === 'home') renderHomeProducts();
+}
+
+// ========== PRODUCT SVG ==========
+function makeCard(p, small) {
+  const badge = p.badge ? `<div class="product-badge">${p.badge}</div>` : '';
+  return `<div class="product-card" onclick="openProduct(${p.id})">
+    <div class="product-img">${badge}<img src="${p.image}" alt="${p.name}" class="product-photo"></div>
+    <div class="product-info">
+      <div class="product-category">${p.cat}</div>
+      <div class="product-name">${p.name}</div>
+      <div class="product-price-row">
+        <div class="product-price">${p.price.toLocaleString('ru')} ₽</div>
+        <button class="add-to-cart" onclick="event.stopPropagation();addToCart(${p.id})">+ Корзина</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ========== HOME PRODUCTS ==========
+function renderHomeProducts() {
+  const hits = products.filter(p => p.badge === 'Хит' || p.badge === 'Новинка' || p.id <= 3);
+  document.getElementById('home-products').innerHTML = hits.slice(0,3).map(p => makeCard(p)).join('');
+}
+
+// ========== CATALOG ==========
+function buildFilters() {
+  const cats = [...new Set(products.map(p => p.cat))];
+  const mats = [...new Set(products.map(p => p.material))];
+  document.getElementById('filter-categories').innerHTML = cats.map(c =>
+    `<label class="filter-option"><input type="checkbox" value="${c}" onchange="applyFilters()"> ${c}</label>`
+  ).join('');
+  document.getElementById('filter-materials').innerHTML = mats.map(m =>
+    `<label class="filter-option"><input type="checkbox" value="${m}" onchange="applyFilters()"> ${m}</label>`
+  ).join('');
+}
+
+function applyFilters() {
+  const cats = [...document.querySelectorAll('#filter-categories input:checked')].map(i => i.value);
+  const mats = [...document.querySelectorAll('#filter-materials input:checked')].map(i => i.value);
+  const minP = parseInt(document.getElementById('price-min').value) || 0;
+  const maxP = parseInt(document.getElementById('price-max').value) || 200000;
+  const sort = document.getElementById('sort-select').value;
+
+  let filtered = products.filter(p => {
+    if (cats.length && !cats.includes(p.cat)) return false;
+    if (mats.length && !mats.includes(p.material)) return false;
+    if (p.price < minP || p.price > maxP) return false;
+    return true;
+  });
+
+  if (sort === 'price-asc') filtered.sort((a,b) => a.price - b.price);
+  if (sort === 'price-desc') filtered.sort((a,b) => b.price - a.price);
+  if (sort === 'name') filtered.sort((a,b) => a.name.localeCompare(b.name));
+
+  document.getElementById('catalog-count').textContent = `Показано товаров: ${filtered.length}`;
+  document.getElementById('catalog-products').innerHTML = filtered.map(p => makeCard(p)).join('') || '<p style="color:var(--text2);padding:2rem;">Товары не найдены. Попробуйте изменить фильтры.</p>';
+}
+
+function renderCatalog() {
+  buildFilters();
+  applyFilters();
+}
+
+function resetFilters() {
+  document.querySelectorAll('#filter-categories input, #filter-materials input').forEach(i => i.checked = false);
+  document.getElementById('price-min').value = 0;
+  document.getElementById('price-max').value = 200000;
+  document.getElementById('price-slider').value = 200000;
+  document.getElementById('sort-select').value = 'default';
+  applyFilters();
+}
+
+// ========== PRODUCT MODAL ==========
+function openProduct(id) {
+  const p = products.find(x => x.id === id);
+  currentProduct = p;
+  document.getElementById('modal-img').innerHTML = p.svg;
+  document.getElementById('modal-cat').textContent = p.cat;
+  document.getElementById('modal-name').textContent = p.name;
+  document.getElementById('modal-price').textContent = p.price.toLocaleString('ru') + ' ₽';
+  document.getElementById('modal-desc').textContent = p.desc;
+  document.getElementById('modal-specs').innerHTML = Object.entries(p.specs).map(([k,v]) =>
+    `<div class="spec-item"><div class="spec-k">${k}</div><div class="spec-v">${v}</div></div>`
+  ).join('');
+  document.getElementById('product-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProductModal() {
+  document.getElementById('product-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('product-modal')) closeProductModal();
+}
+
+function addToCartFromModal() {
+  if (currentProduct) { addToCart(currentProduct.id); closeProductModal(); }
+}
+
+// ========== CART ==========
+function addToCart(id) {
+  const p = products.find(x => x.id === id);
+  const existing = cart.find(x => x.id === id);
+  if (existing) { existing.qty++; }
+  else { cart.push({ ...p, qty: 1 }); }
+  updateCartUI();
+  showToast(`${p.name} добавлен в корзину`);
+}
+
+function updateCartUI() {
+  const total = cart.reduce((s, i) => s + i.qty, 0);
+  document.getElementById('cart-count').textContent = total;
+  const itemsEl = document.getElementById('cart-items');
+  const footerEl = document.getElementById('cart-footer');
+  if (!cart.length) {
+    itemsEl.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🛍</div><p>Ваша корзина пуста</p></div>`;
+    footerEl.style.display = 'none';
+    return;
+  }
+  itemsEl.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-thumb">${item.svg}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">${item.price.toLocaleString('ru')} ₽</div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+        </div>
+      </div>
+      <button class="remove-item" onclick="removeItem(${item.id})">✕</button>
+    </div>`).join('');
+  const totalPrice = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  document.getElementById('cart-total-price').textContent = totalPrice.toLocaleString('ru') + ' ₽';
+  footerEl.style.display = 'block';
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(x => x.id === id);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) cart = cart.filter(x => x.id !== id);
+  updateCartUI();
+}
+
+function removeItem(id) {
+  cart = cart.filter(x => x.id !== id);
+  updateCartUI();
+}
+
+function openCart() {
+  document.getElementById('cart-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  updateCartUI();
+}
+
+function closeCart() {
+  document.getElementById('cart-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeCartOutside(e) {
+  if (e.target === document.getElementById('cart-overlay')) closeCart();
+}
+
+// ========== CHECKOUT ==========
+function openCheckout() {
+  closeCart();
+  const totalPrice = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  document.getElementById('checkout-total').textContent = totalPrice.toLocaleString('ru') + ' ₽';
+  document.getElementById('checkout-overlay').classList.add('open');
+}
+
+function closeCheckout() {
+  document.getElementById('checkout-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function placeOrder() {
+  const name = document.getElementById('ch-name').value.trim();
+  const phone = document.getElementById('ch-phone').value.trim();
+  const address = document.getElementById('ch-address').value.trim();
+  if (!name || !phone || !address) { showToast('Пожалуйста, заполните все обязательные поля'); return; }
+  cart = [];
+  updateCartUI();
+  closeCheckout();
+  showToast('🎉 Заказ оформлен! Мы свяжемся с вами в ближайшее время.');
+}
+
+// ========== CONTACTS FORM ==========
+function submitForm() {
+  const name = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const msg = document.getElementById('f-message').value.trim();
+  if (!name || !email || !msg) { showToast('Пожалуйста, заполните обязательные поля (*)'); return; }
+  document.getElementById('form-success').style.display = 'block';
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-email').value = '';
+  document.getElementById('f-phone').value = '';
+  document.getElementById('f-message').value = '';
+  setTimeout(() => document.getElementById('form-success').style.display = 'none', 5000);
+}
+
+// ========== TOAST ==========
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ========== INIT ==========
+renderHomeProducts();
+</script>
+</body>
+</html>
