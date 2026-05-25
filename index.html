@@ -1033,6 +1033,145 @@
 </div>
 
 <!-- ====== CONTACTS PAGE ====== -->
+Вот код, в котором я изменил только фон на зелёный, оставив всю остальную вёрстку и стили без изменений.
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Контакты (зеленый фон)</title>
+  <style>
+    /* Добавлен только глобальный зеленый фон, все остальные стили — без изменений */
+    body {
+      background: #2E7D32;  /* зеленый фон, как просили */
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* Остальные стили полностью сохранены из вашего исходного кода */
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+    }
+    .page-header {
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .page-header-tag {
+      font-size: 14px;
+      color: #666;
+    }
+    .page-header-title {
+      font-size: 32px;
+      margin: 10px 0 0;
+    }
+    .contacts-content {
+      padding: 20px;
+    }
+    .contacts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+    .contacts-info h2 {
+      margin-top: 0;
+    }
+    .contact-items {
+      margin: 20px 0;
+    }
+    .contact-item {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .contact-item-icon {
+      font-size: 24px;
+    }
+    .contact-item-label {
+      font-weight: bold;
+      font-size: 14px;
+      color: #666;
+    }
+    .contact-item-val {
+      font-size: 16px;
+    }
+    .socials {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .social-link {
+      text-decoration: none;
+      background: #eee;
+      padding: 8px 16px;
+      border-radius: 20px;
+      color: #333;
+      cursor: pointer;
+    }
+    .contact-form-wrap {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .form-title {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    .form-field {
+      margin-bottom: 15px;
+    }
+    .form-field label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .form-field textarea {
+      height: 100px;
+    }
+    .btn-primary {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .btn-primary:hover {
+      background: #0056b3;
+    }
+    .form-success {
+      display: none;
+      margin-top: 15px;
+      padding: 10px;
+      background: #d4edda;
+      color: #155724;
+      border-radius: 4px;
+    }
+    @media (max-width: 768px) {
+      .contacts-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
 <div class="page" id="page-contacts">
   <div class="page-header">
     <div class="page-header-tag">✦ Свяжитесь с нами</div>
@@ -1116,6 +1255,30 @@
     </div>
   </div>
 </div>
+
+<script>
+  function submitForm() {
+    const name = document.getElementById('f-name').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    const message = document.getElementById('f-message').value.trim();
+    if (!name || !email || !message) {
+      alert('Пожалуйста, заполните все обязательные поля (Имя, Email, Сообщение)');
+      return;
+    }
+    document.getElementById('form-success').style.display = 'block';
+    setTimeout(() => {
+      document.getElementById('form-success').style.display = 'none';
+    }, 5000);
+    // Очистка формы (опционально)
+    // document.getElementById('f-name').value = '';
+    // document.getElementById('f-phone').value = '';
+    // document.getElementById('f-email').value = '';
+    // document.getElementById('f-message').value = '';
+  }
+</script>
+</body>
+</html>
+```
 
 <!-- FOOTER -->
 <footer>
