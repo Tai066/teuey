@@ -1219,23 +1219,39 @@
         </div>
       </div>
     
-      <body bgcolor="green">
-      <div class="contact-form-wrap">
-        <div class="form-title">Форма обратной связи</div>
-        <div class="form-grid">
-          <div class="form-field">
-            <label>Имя *</label>
-            <input type="text" id="f-name" placeholder="Ваше имя">
-          </div>
-          <div class="form-field">
-            <label>Телефон</label>
-            <input type="tel" id="f-phone" placeholder="+7 (___) ___-__-__">
-          </div>
-        </div>
-        <div class="form-field">
-          <label>Email *</label>
-          <input type="email" id="f-email" placeholder="you@example.com">
-        </div>
+    <body bgcolor="green">
+  <div class="contact-form-wrap">
+    <div class="form-title">Форма обратной связи</div>
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Имя *</label>
+        <input type="text" id="f-name" placeholder="Ваше имя">
+      </div>
+      <div class="form-field">
+        <label>Телефон</label>
+        <input type="tel" id="f-phone" placeholder="+7 (___) ___-__-__">
+      </div>
+    </div>
+    <div class="form-field">
+      <label>Email *</label>
+      <input type="email" id="f-email" placeholder="you@example.com">
+    </div>
+    <!-- ДОБАВЛЕННЫЕ СТРОЧКИ: Тема сообщения -->
+    <div class="form-field">
+      <label>Тема сообщения *</label>
+      <input type="text" id="f-subject" placeholder="Например: Вопрос по услугам">
+    </div>
+    <!-- ДОБАВЛЕННЫЕ СТРОЧКИ: Поле для текста сообщения -->
+    <div class="form-field">
+      <label>Сообщение *</label>
+      <textarea id="f-message" rows="4" placeholder="Введите ваше сообщение здесь..."></textarea>
+    </div>
+    <!-- ДОБАВЛЕННЫЕ СТРОЧКИ: Кнопка отправки -->
+    <div class="form-field">
+      <button type="submit" class="submit-btn">Отправить сообщение</button>
+    </div>
+  </div>
+</body>
         <div class="form-field">
           <label>Тема обращения</label>
           <select id="f-subject">
